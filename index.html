@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+   
+</head>
+
+<body>
+
+    <h1 align="center"><font color="red">XXX    后台接单系统，可以及时查看最新的订单信息！</font></h1>
+    <audio src="NewOrder.mp3" id="myaudio" controls="controls" loop="false" hidden="true">
+    </audio>
+    <input type="button" onclick="autoPlay()" value="播放" />
+    <input type="button" onclick="closePlay()" value="关闭" />
+	<script language="javascript" type="text/javascript">
+
+        //这里可以设置请求后台的时间，我这里设置的是半分钟请求后台一次，主要是提示音播放的时长问题，所以设置的为30秒    
+        $(document).ready(function(){
+             //30秒请求一次后台，查询是否有新的订单
+             setInterval('getOrderStatus()',30000);
+            
+        });
+
+      
+
+		//播放提示音的功能函数
+        function autoPlay() {
+            var myAuto = document.getElementById('myaudio');
+            myAuto.play();
+            //执行延时函数，当音乐播放完成后，应该停止循环播放
+           setTimeout('closePlay()',11000);
+          
+        }
+
+        //暂停播放提示音的功能函数
+        function closePlay() {
+            var myAuto = document.getElementById('myaudio');
+            myAuto.pause();
+            myAuto.load();
+        }
+
+       
+        //获取订单状态的功能函数
+        function getOrderStatus() {
+           // alert('123');
+    
+            $.ajax({
+             type: "POST",
+             url: "answer.php",
+             data: {username:'zuoyan', content:'l love you'},
+             dataType: "json",
+             success: function(data){
+                    if(data.code == '1')
+                    {
+                        autoPlay();
+                    }
+                    
+              }
+            });
+        }
+        
+    </script>
+
+
+</body>
+
+</html>
